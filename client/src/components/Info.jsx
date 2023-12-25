@@ -4,7 +4,7 @@ function Info() {
 
   return (
     <p className="customText">
-      Please enter your sign in information
+      Please follow the instructions below
     </p>
   )
 } 

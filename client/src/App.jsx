@@ -1,4 +1,5 @@
-import Info from './Info.jsx'
+import Info from './components/Info.jsx'
+import Login from './components/Login.jsx'
 
 function App() {
 
@@ -6,6 +7,7 @@ function App() {
     <div>
       <h1 className="text-green-600 font-bold text-xl">Welcome</h1>
       <Info/>
+      <Login/>
     </div>
   )
 }
