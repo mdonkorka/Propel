@@ -6,9 +6,13 @@ const pool = require ("./database")
 app.use(cors());
 app.use(express.json())
 
+
+//await - pauses the execution of the async function until the Promise is settled.
+//      - waits for that very function to finish
+
 //--- FROM EXPRESSJS -----
 app.get("/adduser", async (req,res) => { //async - waits for the function to complete before it continues.
-  console.log(req.query);
+  console.log(req.body);
   res.send("Response Received: " + req.body);
 });
 
