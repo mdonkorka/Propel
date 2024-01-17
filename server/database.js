@@ -1,5 +1,7 @@
 const {Pool} = require("pg");
 
+//Here we are creating an instance of the pool class with one object. 
+//  The one object contains different values
 const pool = new Pool({
   user: "postgres",
   password: "Supergiza43!",
