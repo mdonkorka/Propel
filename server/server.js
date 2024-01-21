@@ -6,9 +6,18 @@ const pool = require ("./database")
 app.use(cors());
 app.use(express.json())
 
-
-//await - pauses the execution of the async function until the Promise is settled.
-//      - waits for that very function to finish
+app.post("/signup", async (req, res) => {
+  try {
+    const { email, firstname, lastname, password } = req.body;
+    const newUser = await pool.query(
+      'INSERT INTO Users (email, password, firstname, lastname) VALUES ($1, $2, $3, $4)',
+      [email, firstname, lastname, password]
+    );
+    res.send("Success");
+  } catch (err) {
+    console.error(err.message);
+  }
+});
 
 //--- FROM EXPRESSJS -----
 app.get("/adduser", async (req,res) => { //async - waits for the function to complete before it continues.
