@@ -2,6 +2,7 @@ const express = require("express");
 router = express.Router();
 const pool = require ("../database");
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 router.post("/login", async (req, res) => {
   try {
@@ -16,6 +17,14 @@ router.post("/login", async (req, res) => {
     if (!passwordCheck) return res.status(400).json("Password or username is incorrect");
 
     console.log("user details are correct")
+
+    const token = jwt.sign({ id: user.rows[0].email}, process.env.SECRET_KEY);
+
+    res.cookie("authToken", token, {
+      httpOnly: true, //ensures cookie should only be accessed through HTTP requests and not client-side scripts.
+    })
+    .status(200).json({message: 'Successfully signed in'});
+    
 
   } catch (err) {
     console.error(err.message);
