@@ -24,9 +24,9 @@ function Login() {
         throw Error(`Respose Status Code: ${response.status}`)
       }
 
-      //window.location = "/login";
+      window.location = "/dashboard";
     } catch (err) {
-      //console.error(err.message)
+      
     }
   }
 
