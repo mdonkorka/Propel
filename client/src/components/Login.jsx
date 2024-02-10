@@ -17,16 +17,13 @@ function Login() {
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(body)
       });
-      const responseData = await response.json();
-      
       if (!response.ok) {
         setErrorLabel(responseData.error);
         throw Error(`Respose Status Code: ${response.status}`)
       }
-
       window.location = "/dashboard";
     } catch (err) {
-      
+      console.log(err)
     }
   }
 

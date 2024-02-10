@@ -21,7 +21,6 @@ function SignUp() {
         body: JSON.stringify(body)
       });
       const responseData = await response.json();
-      console.log(responseData)
       if (!response.ok) {
         setErrorLabel(responseData.error);
         throw Error(`Respose Status Code: ${response.status}`)

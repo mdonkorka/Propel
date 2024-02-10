@@ -6,6 +6,13 @@ const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
 dotenv.config();
 
+router.post("/logout", async (req, res) => {
+  res.clearCookie("authToken", {
+    secure: true,
+    SameSite: "none"
+  }).status(200).json({message: "Successfully logged out"})
+});
+
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -16,7 +23,7 @@ router.post("/login", async (req, res) => {
     }
     //Check if the password is correct
     const passwordCheck = bcrypt.compareSync(password, user.rows[0].password);
-    if (!passwordCheck) return res.status(400).json("Password or username is incorrect");
+    if (!passwordCheck) return res.status(400).json({error: "Password or username is incorrect"});
 
     console.log("user details are correct")
 
