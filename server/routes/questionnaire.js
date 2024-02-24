@@ -6,34 +6,42 @@ const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
 dotenv.config();
 
+const tokenAuthentication = require('../middleware/authMiddleware');
+
 router.post("/save", tokenAuthentication, async (req, res) => {
   try {
-    const { attendance, absences, faliures, studytime, lastgrade } = req.body;
+    const { attendance, absences, faliures, studytime, lastgrade,
+      app1Name, app1UseCase, app1Link,
+      app2Name, app2UseCase, app2Link,
+      app3Name, app3UseCase, app3Link } = req.body;
 
     //add a new entry to the questionnaire table
     const newQuestionnaire = await pool.query(
       'INSERT INTO questionnaire (userId, attendance, absences, faliures, studytime, lastgrade) VALUES ($1, $2, $3, $4, $5, $6)',
       [req.id, attendance, absences, faliures, studytime, lastgrade]
     );
-    res.status(200).json({message: 'Questionnary entry successfully added to the database'});
+
+    //add a new entry to the apps table
+    const newApps = await pool.query(
+      'INSERT INTO apps (name, usecase, link) VALUES ($1, $2, $3), ($4, $5, $6), ($7, $8, $9) RETURNING appid',
+      [app1Name, app1UseCase, app1Link, app2Name, app2UseCase, app2Link, app3Name, app3UseCase, app3Link]
+    );
+    
+    const app1id = newApps.rows[0].appid;
+    const app2id = newApps.rows[1].appid;
+    const app3id = newApps.rows[2].appid;
+
+    //add new entries to the topthreeapps table
+    const newTopThreeApps = await pool.query(
+      'INSERT INTO topthreeapps (userid, appid) VALUES ($1, $2), ($3, $4), ($5, $6)',
+      [req.id, app1id, req.id, app2id, req.id, app3id]
+    );
+
+    res.status(200).json({message: 'Questionnare entry successfully added to the database'});
   } catch (err) {
     console.error(err.message);
     res.status(500).json({error: "Internal Server Error"});
   }
 });
-
-//verify the auth token exists and it's correct
-function tokenAuthentication(req, res, next) {
-  if (req.cookies && req.cookies.authToken) {
-    const authToken = req.cookies.authToken
-    jwt.verify(authToken, process.env.SECRET_KEY, (err, user) => {
-      if (err) return res.status(400).json({error: 'AuthToken is invalid'});
-      req.id = user.id
-      next()
-    })
-  } else {
-    return res.status(400).json({error: 'AuthToken missing'});
-  }
-}
 
 module.exports = router;
