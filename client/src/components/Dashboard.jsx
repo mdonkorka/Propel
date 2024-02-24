@@ -8,6 +8,7 @@ function Dashboard() {
       const response = await fetch ("http://localhost:4000/auth/logout", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
+        credentials: "include",
       });
       if (!response.ok) {
         throw Error(`Respose Status Code: ${response.status}`)

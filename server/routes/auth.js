@@ -25,14 +25,12 @@ router.post("/login", async (req, res) => {
     const passwordCheck = bcrypt.compareSync(password, user.rows[0].password);
     if (!passwordCheck) return res.status(400).json({error: "Password or username is incorrect"});
 
-    console.log("user details are correct")
-
-    const token = jwt.sign({ id: user.rows[0].email}, process.env.SECRET_KEY);
-
+    const token = jwt.sign({ id: user.rows[0].userid}, process.env.SECRET_KEY);
     res.cookie("authToken", token, {
       httpOnly: true, //ensures cookie should only be accessed through HTTP requests and not client-side scripts.
     })
     .status(200).json({message: 'Successfully signed in'});
+
     
 
   } catch (err) {
@@ -61,8 +59,8 @@ router.post("/signup", async (req, res) => {
 
     //Add user to database
     const newUser = await pool.query(
-      'INSERT INTO Users (email, username, password, firstname, lastname) VALUES ($1, $2, $3, $4, $5)',
-      [email, username,  hashedPassword, firstname, lastname]
+      'INSERT INTO Users (email, username, password, firstname, lastname, filledinquestionnaire) VALUES ($1, $2, $3, $4, $5, $6)',
+      [email, username,  hashedPassword, firstname, lastname, false]
     );
     res.status(200).json({message: 'User created successfully'});
   } catch (err) {

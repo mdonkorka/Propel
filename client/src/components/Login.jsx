@@ -8,14 +8,14 @@ function Login() {
   const [errorLabel, setErrorLabel] = useState("");
 
   const onSubmitForm = async e => {
-    console.log("submitted")
     e.preventDefault();
     try {
       const body = { email, password };
       const response = await fetch ("http://localhost:4000/auth/login", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
-        body: JSON.stringify(body)
+        body: JSON.stringify(body),
+        credentials: "include"
       });
       if (!response.ok) {
         setErrorLabel(responseData.error);
