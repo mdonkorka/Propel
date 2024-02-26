@@ -1,4 +1,5 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
+import { Link } from "react-router-dom"
 
 function Questionnaire() {
   const [attendance, setAttendance] = useState("");
@@ -43,6 +44,47 @@ function Questionnaire() {
       console.log(err)
     }
   }
+
+  const getData = async () => {
+    try {
+      const userData = await fetch ("http://localhost:4000/questionnaire/getData", {
+        method: "GET",
+        headers: {"Content-Type": "application/json"},
+        credentials: "include",
+      });
+      const jsonData = await userData.json();
+      //console.log(jsonData.questionnaireData);
+
+      const academicData = jsonData.academicData;
+      const topThreeAppsData = jsonData.topThreeAppsData.rows;
+      
+      setAttendance(academicData.attendance);
+      setAbsences(academicData.absences);
+      setFaliures(academicData.faliures);
+      setStudyTime(academicData.studytime);
+      setLastGrade(academicData.lastgrade);
+
+      setApp1Name(topThreeAppsData[0].name);
+      setApp1Link(topThreeAppsData[0].link);
+      setApp1UseCase(topThreeAppsData[0].usecase);
+
+      setApp2Name(topThreeAppsData[1].name);
+      setApp2Link(topThreeAppsData[1].link);
+      setApp2UseCase(topThreeAppsData[1].usecase);
+
+      setApp3Name(topThreeAppsData[2].name);
+      setApp3Link(topThreeAppsData[2].link);
+      setApp3UseCase(topThreeAppsData[2].usecase);
+      
+
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  useEffect(() => {
+    getData();
+  }, []);
 
   return (
     <div>
@@ -104,7 +146,12 @@ function Questionnaire() {
             </div>
           </div>
         </div>
-        <button className="bg-green-500 p-1 h-10 w-20 mt-5">Submit</button>   
+        <div className=" flex w-40 justify-around mt-5">
+          <button className="bg-green-500 p-3 h-10">Submit</button>  
+          <Link to="/dashboard">
+            <button className="bg-red-500 p-3 h-10 ">Cancel</button>
+          </Link> 
+        </div>
       </form> 
     </div>
   )

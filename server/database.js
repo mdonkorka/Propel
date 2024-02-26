@@ -13,10 +13,10 @@ const pool = new Pool({
 module.exports = pool;
 
 // pool
-//   .query("SELECT * FROM users;")
+//   .query("SELECT * FROM questionnaire;")
 //   .then((response) => {
 //     console.log("Database Created");
-//     console.log(response);
+//     console.log(response.rows);
 //   })
 //   .catch((err) => {
 //     console.log(err);

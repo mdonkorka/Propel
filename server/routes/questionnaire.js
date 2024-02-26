@@ -44,4 +44,26 @@ router.post("/save", tokenAuthentication, async (req, res) => {
   }
 });
 
+router.get("/getData", tokenAuthentication, async (req, res) => {
+  try {
+    const academicData = await pool.query(
+      'SELECT attendance, absences, faliures, studytime, lastgrade FROM questionnaire WHERE userid = $1 LIMIT 1',
+      [req.id]
+    );
+
+    const topThreeAppsData = await pool.query(
+      'SELECT name, usecase, link FROM apps WHERE appid IN (SELECT appid FROM topthreeapps WHERE userid = $1)',
+      [req.id]
+    );
+
+
+
+    res.status(200).json({academicData: academicData.rows[0], topThreeAppsData: topThreeAppsData});
+
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({error: "Internal Server Error"});
+  }
+});
+
 module.exports = router;
