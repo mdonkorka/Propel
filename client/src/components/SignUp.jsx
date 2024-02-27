@@ -36,7 +36,7 @@ function SignUp() {
     <div className=" h-[calc(100vh-2.5rem)] flex bg-yellow flex flex-col justify-center items-center w-full">
         <h1 className="font-bold text-5xl">Sign Up</h1>
         <form className="flex flex-col justify-center items-center mt-10" onSubmit={onSubmitForm}>
-          <label>{errorLabel}</label>
+          <label className="mt-5">{errorLabel}</label>
           <input className="border-2 mt-2 w-80 p-1" value={email} onChange={e => setEmail(e.target.value)} placeholder="Email" type="email"></input><br/>
           <input className="border-2 mt-2 w-80 p-1" value={username} onChange={e => setUsername(e.target.value)} placeholder="Username" type="text"></input><br/>
           <input className="border-2 mt-2 w-80 p-1" value={firstname} onChange={e => setFirstname(e.target.value)} placeholder="Firstname" type="text"></input><br/>
