@@ -1,4 +1,4 @@
-
+import { Link } from "react-router-dom"
 
 function Dashboard() {
 
@@ -21,8 +21,13 @@ function Dashboard() {
 
   return (
     <div>
-      <button className="mt-20" onClick={logout}>Logout</button>
-    </div>
+      <div>
+        <button className="mt-20 bg-gray-400 p-1 h-10" onClick={logout}>Logout</button>
+      </div>
+      <Link to="/questionnaire">
+        <button className="mt-5 bg-gray-400 p-1 h-10">Questionnaire</button>
+      </Link>
+   </div>
   )
 }
 

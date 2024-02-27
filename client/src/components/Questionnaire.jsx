@@ -20,9 +20,6 @@ function Questionnaire() {
   const [app3UseCase, setApp3UseCase] = useState("");
   const [app3Link, setApp3Link] = useState("")
 
-  //top three apps needs to be added here
-  //also make sure user is authenticated before they can access this page
-
   const onSubmitForm = async e => {
     e.preventDefault();
     try {
@@ -37,6 +34,7 @@ function Questionnaire() {
         body: JSON.stringify(body),
         credentials: "include",
       });
+      location.reload();
       if (!response.ok) {
         throw Error(`Respose Status Code: ${response.status}`)
       }
@@ -53,7 +51,6 @@ function Questionnaire() {
         credentials: "include",
       });
       const jsonData = await userData.json();
-      //console.log(jsonData.questionnaireData);
 
       const academicData = jsonData.academicData;
       const topThreeAppsData = jsonData.topThreeAppsData.rows;
@@ -64,19 +61,23 @@ function Questionnaire() {
       setStudyTime(academicData.studytime);
       setLastGrade(academicData.lastgrade);
 
-      setApp1Name(topThreeAppsData[0].name);
-      setApp1Link(topThreeAppsData[0].link);
-      setApp1UseCase(topThreeAppsData[0].usecase);
-
-      setApp2Name(topThreeAppsData[1].name);
-      setApp2Link(topThreeAppsData[1].link);
-      setApp2UseCase(topThreeAppsData[1].usecase);
-
-      setApp3Name(topThreeAppsData[2].name);
-      setApp3Link(topThreeAppsData[2].link);
-      setApp3UseCase(topThreeAppsData[2].usecase);
-      
-
+      for (let i=0; i<topThreeAppsData.length; i++) {
+        if (1 == topThreeAppsData[i].number) {
+          setApp1Name(topThreeAppsData[i].name);
+          setApp1UseCase(topThreeAppsData[i].usecase);
+          setApp1Link(topThreeAppsData[i].link);
+        }
+        if (2 == topThreeAppsData[i].number) {
+          setApp2Name(topThreeAppsData[i].name);
+          setApp2UseCase(topThreeAppsData[i].usecase);
+          setApp2Link(topThreeAppsData[i].link);
+        }
+        if (3 == topThreeAppsData[i].number) {
+          setApp3Name(topThreeAppsData[i].name);
+          setApp3UseCase(topThreeAppsData[i].usecase);
+          setApp3Link(topThreeAppsData[i].link);
+        }
+      }
     } catch (err) {
       console.log(err);
     }

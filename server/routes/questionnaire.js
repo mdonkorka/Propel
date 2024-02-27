@@ -9,34 +9,78 @@ dotenv.config();
 const tokenAuthentication = require('../middleware/authMiddleware');
 
 router.post("/save", tokenAuthentication, async (req, res) => {
+
+  const { attendance, absences, faliures, studytime, lastgrade,
+    app1Name, app1UseCase, app1Link,
+    app2Name, app2UseCase, app2Link,
+    app3Name, app3UseCase, app3Link } = req.body;
+
   try {
-    const { attendance, absences, faliures, studytime, lastgrade,
-      app1Name, app1UseCase, app1Link,
-      app2Name, app2UseCase, app2Link,
-      app3Name, app3UseCase, app3Link } = req.body;
+    const academicDataCheck = await pool.query("SELECT * FROM questionnaire WHERE userid = $1",[req.id]);
+    if (academicDataCheck.rows.length > 0) {
+      //update entry in the questionnaire table
+      pool.query(
+        `UPDATE questionnaire 
+        SET attendance = $2, absences = $3, faliures = $4, studytime = $5, lastgrade = $6
+        WHERE userId = $1`,
+        [req.id, attendance, absences, faliures, studytime, lastgrade]
+      );
+    } else {
+      //add a new entry to the questionnaire table
+      const newQuestionnaire = await pool.query(
+        'INSERT INTO questionnaire (userId, attendance, absences, faliures, studytime, lastgrade) VALUES ($1, $2, $3, $4, $5, $6)',
+        [req.id, attendance, absences, faliures, studytime, lastgrade]
+      );
+    }
 
-    //add a new entry to the questionnaire table
-    const newQuestionnaire = await pool.query(
-      'INSERT INTO questionnaire (userId, attendance, absences, faliures, studytime, lastgrade) VALUES ($1, $2, $3, $4, $5, $6)',
-      [req.id, attendance, absences, faliures, studytime, lastgrade]
-    );
+    const topThreeAppsCheck = await pool.query(`SELECT * FROM topthreeapps WHERE userid = $1 AND number = $2`,
+    [req.id, 1]);
+    if (topThreeAppsCheck.rows.length > 0) {
+      //update the first topthreeapp if it exists
+      pool.query(
+        `UPDATE topthreeapps SET name = $3, usecase = $4, link = $5 WHERE userId = $1 AND number = $2`,
+        [req.id, 1, app1Name, app1UseCase, app1Link]
+      );
+    } else {
+      //insert the first top three app if it doesn't exist
+      pool.query(
+          'INSERT INTO topthreeapps (userid, number, name, usecase, link) VALUES ($1, $2, $3, $4, $5)',
+          [req.id, 1, app1Name, app1UseCase, app1Link]
+        );
+    }
 
-    //add a new entry to the apps table
-    const newApps = await pool.query(
-      'INSERT INTO apps (name, usecase, link) VALUES ($1, $2, $3), ($4, $5, $6), ($7, $8, $9) RETURNING appid',
-      [app1Name, app1UseCase, app1Link, app2Name, app2UseCase, app2Link, app3Name, app3UseCase, app3Link]
-    );
+    const topThreeAppsCheck2 = await pool.query(`SELECT * FROM topthreeapps WHERE userid = $1 AND number = $2`,
+    [req.id, 2]);
+    if (topThreeAppsCheck2.rows.length > 0) {
+      //update the second topthreeapp if it exists
+      pool.query(
+        `UPDATE topthreeapps SET name = $3, usecase = $4, link = $5 WHERE userId = $1 AND number = $2`,
+        [req.id, 2, app2Name, app2UseCase, app2Link]
+      );
+    } else {
+      //update the second topthreeapp if it doesn't exist
+      pool.query(
+          'INSERT INTO topthreeapps (userid, number, name, usecase, link) VALUES ($1, $2, $3, $4, $5)',
+          [req.id, 2, app2Name, app2UseCase, app2Link]
+        );
+    }
+
+    const topThreeAppsCheck3 = await pool.query(`SELECT * FROM topthreeapps WHERE userid = $1 AND number = $2`,
+    [req.id, 3]);
+    if (topThreeAppsCheck3.rows.length > 0) {
+      //update the third topthreeapp if it exists
+      pool.query(
+        `UPDATE topthreeapps SET name = $3, usecase = $4, link = $5 WHERE userId = $1 AND number = $2`,
+        [req.id, 3, app3Name, app3UseCase, app3Link]
+      );
+    } else {
+      //update the third topthreeapp if it doesn't exist
+      pool.query(
+          'INSERT INTO topthreeapps (userid, number, name, usecase, link) VALUES ($1, $2, $3, $4, $5)',
+          [req.id, 3, app3Name, app3UseCase, app3Link]
+        );
+    }
     
-    const app1id = newApps.rows[0].appid;
-    const app2id = newApps.rows[1].appid;
-    const app3id = newApps.rows[2].appid;
-
-    //add new entries to the topthreeapps table
-    const newTopThreeApps = await pool.query(
-      'INSERT INTO topthreeapps (userid, appid) VALUES ($1, $2), ($3, $4), ($5, $6)',
-      [req.id, app1id, req.id, app2id, req.id, app3id]
-    );
-
     res.status(200).json({message: 'Questionnare entry successfully added to the database'});
   } catch (err) {
     console.error(err.message);
@@ -44,6 +88,8 @@ router.post("/save", tokenAuthentication, async (req, res) => {
   }
 });
 
+
+//get the questionnaire data to fill the page
 router.get("/getData", tokenAuthentication, async (req, res) => {
   try {
     const academicData = await pool.query(
@@ -52,11 +98,9 @@ router.get("/getData", tokenAuthentication, async (req, res) => {
     );
 
     const topThreeAppsData = await pool.query(
-      'SELECT name, usecase, link FROM apps WHERE appid IN (SELECT appid FROM topthreeapps WHERE userid = $1)',
+      'SELECT number, name, usecase, link FROM topthreeapps WHERE userid = $1',
       [req.id]
     );
-
-
 
     res.status(200).json({academicData: academicData.rows[0], topThreeAppsData: topThreeAppsData});
 
