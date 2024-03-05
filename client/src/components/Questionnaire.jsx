@@ -44,43 +44,43 @@ function Questionnaire() {
   }
 
   const getData = async () => {
-    try {
-      const userData = await fetch ("http://localhost:4000/questionnaire/getData", {
-        method: "GET",
-        headers: {"Content-Type": "application/json"},
-        credentials: "include",
-      });
-      const jsonData = await userData.json();
+      try {
+        const userData = await fetch ("http://localhost:4000/questionnaire/getData", {
+          method: "GET",
+          headers: {"Content-Type": "application/json"},
+          credentials: "include",
+        });
+        const jsonData = await userData.json();
 
-      const academicData = jsonData.academicData;
-      const topThreeAppsData = jsonData.topThreeAppsData.rows;
-      
-      setAttendance(academicData.attendance);
-      setAbsences(academicData.absences);
-      setFaliures(academicData.faliures);
-      setStudyTime(academicData.studytime);
-      setLastGrade(academicData.lastgrade);
+        const academicData = jsonData.academicData;
+        const topThreeAppsData = jsonData.topThreeAppsData.rows;
+        
+        setAttendance(academicData.attendance);
+        setAbsences(academicData.absences);
+        setFaliures(academicData.faliures);
+        setStudyTime(academicData.studytime);
+        setLastGrade(academicData.lastgrade);
 
-      for (let i=0; i<topThreeAppsData.length; i++) {
-        if (1 == topThreeAppsData[i].number) {
-          setApp1Name(topThreeAppsData[i].name);
-          setApp1UseCase(topThreeAppsData[i].usecase);
-          setApp1Link(topThreeAppsData[i].link);
+        for (let i=0; i<topThreeAppsData.length; i++) {
+          if (1 == topThreeAppsData[i].number) {
+            setApp1Name(topThreeAppsData[i].name);
+            setApp1UseCase(topThreeAppsData[i].usecase);
+            setApp1Link(topThreeAppsData[i].link);
+          }
+          if (2 == topThreeAppsData[i].number) {
+            setApp2Name(topThreeAppsData[i].name);
+            setApp2UseCase(topThreeAppsData[i].usecase);
+            setApp2Link(topThreeAppsData[i].link);
+          }
+          if (3 == topThreeAppsData[i].number) {
+            setApp3Name(topThreeAppsData[i].name);
+            setApp3UseCase(topThreeAppsData[i].usecase);
+            setApp3Link(topThreeAppsData[i].link);
+          }
         }
-        if (2 == topThreeAppsData[i].number) {
-          setApp2Name(topThreeAppsData[i].name);
-          setApp2UseCase(topThreeAppsData[i].usecase);
-          setApp2Link(topThreeAppsData[i].link);
-        }
-        if (3 == topThreeAppsData[i].number) {
-          setApp3Name(topThreeAppsData[i].name);
-          setApp3UseCase(topThreeAppsData[i].usecase);
-          setApp3Link(topThreeAppsData[i].link);
-        }
+      } catch (err) {
+        console.log(err);
       }
-    } catch (err) {
-      console.log(err);
-    }
   }
 
   useEffect(() => {

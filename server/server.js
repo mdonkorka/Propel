@@ -18,9 +18,12 @@ app.use(cookieParser());
 //routes
 const authRoute = require('./routes/auth');
 const questionnaireRoute = require('./routes/questionnaire');
+const friendsRoute = require('./routes/friends');
 
 app.use('/auth', authRoute);
 app.use('/questionnaire', questionnaireRoute);
+app.use('/friends', friendsRoute);
+
 
 
 app.listen(4000, () => {
