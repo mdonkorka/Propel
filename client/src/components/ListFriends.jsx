@@ -25,11 +25,89 @@ function ListFriends() {
       setOutgoing(outgoingList)
       const incomingList = friendsData.filter(relation => relation.type === 'incoming')
       setIncoming(incomingList)
-      //console.log(incoming)
+      
     } catch (err) {
       console.log(err);
     }
   } 
+
+  const deleteOutgoingRequest = async (index, e) => {
+    e.preventDefault();
+    try {
+      const otherUserId = outgoing[index].userid2;
+      const body = { otherUserId }
+
+      const response = await fetch ("http://localhost:4000/friends/deleteOutgoingRequest", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(body),
+        credentials: "include"
+      });
+      window.location.reload();
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  const acceptIncomingRequest = async (index, e) => {
+    e.preventDefault();
+    try {
+      const otherUserId = incoming[index].userid2;
+      const body = { otherUserId }
+      console.log(body)
+
+      const response = await fetch ("http://localhost:4000/friends/acceptIncomingRequest", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(body),
+        credentials: "include"
+      });
+      window.location.reload();
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  const rejectIncomingRequest = async (index, e) => {
+    e.preventDefault();
+    try {
+      const otherUserId = incoming[index].userid2;
+      const body = { otherUserId }
+      console.log(body)
+
+      const response = await fetch ("http://localhost:4000/friends/rejectIncomingRequest", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(body),
+        credentials: "include"
+      });
+      window.location.reload();
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  const removeFriend = async (index, e) => {
+    e.preventDefault();
+    try {
+      const otherUserId = friends[index].userid2;
+      const body = { otherUserId }
+      console.log(body)
+
+      const response = await fetch ("http://localhost:4000/friends/removeFriend", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(body),
+        credentials: "include"
+      });
+      window.location.reload();
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+
+
 
   return (
     <Fragment>
@@ -49,7 +127,7 @@ function ListFriends() {
                 <button className=' border-2 p-1 text-center'>View Profile</button>
               </td>
               <td className='px-6 py-1'>
-                <button className='border-2 p-1 text-center'>Remove Friend</button>
+                <button className='border-2 p-1 text-center' onClick={(e) => removeFriend(index, e)}>Remove Friend</button>
               </td>
             </tr>
           ))}
@@ -69,10 +147,10 @@ function ListFriends() {
             <tr key={index}>
               <td className='px-6 py-1 text-center'>{friend.username}</td>
               <td className='px-6 py-1'>
-                <button className=' border-2 p-1 text-center'>Accept</button>
+                <button className=' border-2 p-1 text-center' onClick={(e) => acceptIncomingRequest(index, e)}>Accept</button>
               </td>
               <td className='px-6 py-1'>
-                <button className='border-2 p-1 text-center'>Reject</button>
+                <button className='border-2 p-1 text-center' onClick={(e) => rejectIncomingRequest(index, e)}>Reject</button>
               </td>
             </tr>
           ))}
@@ -82,7 +160,7 @@ function ListFriends() {
       <table>
         <thead>
           <tr>
-            <th className='px-6 py-1 w-52'>Incoming Request</th>
+            <th className='px-6 py-1 w-52'>Outgoing Request</th>
             <th className='px-6 py-1'>Cancel</th>
           </tr>
         </thead>
@@ -91,7 +169,7 @@ function ListFriends() {
             <tr key={index}>
               <td className='px-6 py-1 text-center'>{friend.username}</td>
               <td className='px-6 py-1'>
-                <button className=' border-2 p-1 text-center'>Delete</button>
+                <button className=' border-2 p-1 text-center' onClick={(e) => deleteOutgoingRequest(index, e)}>Delete</button>
               </td>
             </tr>
           ))}

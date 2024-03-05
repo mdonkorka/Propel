@@ -9,12 +9,10 @@ function friends() {
   const [errorLabel, setErrorLabel] = useState("");
 
   const searchForFriends = async e => {
-    // should return error if username is not found
-    // should show error message if it doesn't work
-    e.preventDefault();
+    //e.preventDefault();
     try {
       const body = { searchUsername };
-      console.log(searchUsername);
+      // console.log(searchUsername);
       const response = await fetch ("http://localhost:4000/friends/add", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
@@ -26,7 +24,7 @@ function friends() {
         setErrorLabel(responseData.error);
         throw Error(`Respose Status Code: ${response.status}`)
       }
-      window.location = "/dashboard";
+      window.location.reload();
     } catch (err) {
       console.log(err)
     }
