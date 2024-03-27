@@ -1,6 +1,7 @@
 import React, { Fragment, useState } from 'react'
 
 import ListFriends from './ListFriends';
+import Graph from './Graph';
 
 
 function friends() {
@@ -42,6 +43,7 @@ function friends() {
       {/* In the friends table, each friend needs to have remove and view profile next to their name */}
       {/* I need tables for friends, outgoing requests, and incoming requests */}
       <ListFriends/>
+      <Graph/>
     </Fragment>
   )
 }

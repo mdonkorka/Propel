@@ -19,10 +19,12 @@ app.use(cookieParser());
 const authRoute = require('./routes/auth');
 const questionnaireRoute = require('./routes/questionnaire');
 const friendsRoute = require('./routes/friends');
+const graphRoute = require('./routes/graph')
 
 app.use('/auth', authRoute);
 app.use('/questionnaire', questionnaireRoute);
 app.use('/friends', friendsRoute);
+app.use('/graph', graphRoute);
 
 
 
