@@ -37,45 +37,47 @@ function graph() {
             // ];
       
       
-      const graphData = {"attendance": {},
-                    "faliures": {},
-                    "studytime": {},
-                    "absences": {},
-                    "lastgrade": {},
+      const graphData = {"attendance": [],
+                    "faliures": [],
+                    "studytime": [],
+                    "absences": [],
+                    "lastgrade": [],
       }
 
       console.log(userData)
 
       for (let attribute in graphData) { //loops throguh the keys
         let userScore =  (userData["usersData"][attribute])
+
         //get the highest value in user data
-        graphData[attribute]["highest value"] = userData["friendsData"].reduce((acc, current) => {  //acc stands for accumulator
+        let highestVal = userData["friendsData"].reduce((acc, current) => {  //acc stands for accumulator
           return acc[attribute] >= current[attribute] ? acc[attribute] : current[attribute]
         });
-        if (userScore > graphData[attribute]["highest value"]) {
-          graphData[attribute]["highest value"] = userScore;
+        if (userScore > highestVal) {
+          highestVal = userScore;
         }
+        graphData[attribute].push({group: "highest value", value: highestVal})
         //get the lowest value in user data
-        graphData[attribute]["lowest value"] = userData["friendsData"].reduce((acc, current) => {
+        let lowestVal = userData["friendsData"].reduce((acc, current) => {  //acc stands for accumulator
           return acc[attribute] <= current[attribute] ? acc[attribute] : current[attribute]
         });
-        if (userScore < graphData[attribute]["lowest value"]) {
-          graphData[attribute]["lowest value"] = userScore;
+        if (userScore < lowestVal) {
+          lowestVal = userScore;
         }
+        graphData[attribute].push({group: "lowest value", value: highestVal})
         //get the mean value in user data
         let total = userData["friendsData"].reduce((acc, current) => {
           return acc + parseInt(current[attribute]);
         }, 0);
         total += parseInt(userScore)
-        graphData[attribute]["mean"] = (total / (userData["friendsData"].length + 1)).toFixed(2)
-        //get the users values
-        // userData.filter((data) => data.userid = )
-        graphData[attribute]["userScore"] = userScore
+        graphData[attribute].push({group: "mean", value: (total / (userData["friendsData"].length + 1)).toFixed(2)})
+        //get the users score
+        graphData[attribute].push({group: "user score", value: userScore})
       }
 
       console.log(userData);
       console.log(graphData)
-      
+
     } catch (err) {
       console.log(err);
     }
