@@ -6,7 +6,7 @@ function compareTable({selectedButton, friendsData, usersData}) {
     return <div>Loading friends data...</div>;
   }
 
-  console.log("friendsData: ", friendsData);
+  // console.log("friendsData: ", friendsData);
 
   const sortedAttendance = [...friendsData].sort((a, b) => b.attendance - a.attendance);
   const sortedFaliures = [...friendsData].sort((a, b) => b.faliures - a.faliures);
