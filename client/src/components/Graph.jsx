@@ -2,34 +2,20 @@ import React, { Fragment, useState, useEffect, useRef } from 'react'
 
 import CompareTable from './compareTable';
 
-function graph() {
+function graph({userData}) {
+
+  if (!userData) {
+    return <div>Loading user data...</div>;
+  }
 
   const [selectedButton, setSelectedButton] = useState('attendance');
-  const [userData, setuserData] = useState(null);
-  const [usersData, setusersData] = useState(null);
-
   const [updatedGraphData, setUpdatedGraphData] = useState({});
-
-  const svgRef = useRef(null);
 
   useEffect( () => {
     getData();
   }, [])
 
   const getData = async () => {
-    // console.log("getting data");
-    try {
-      const fetchedUserData = await fetch ("http://localhost:4000/graph/getdata", {
-        method: "GET",
-        headers: {"Content-Type": "application/json"},
-        credentials: "include",
-      });
-
-      const userData = await fetchedUserData.json();
-      setuserData(userData["friendsData"]);
-      setusersData(userData["usersData"]);
-
-
       const graphData = {"attendance": [],
                     "faliures": [],
                     "studytime": [],
@@ -58,10 +44,6 @@ function graph() {
 
       setUpdatedGraphData(graphData);
       update(graphData[selectedButton])
-
-    } catch (err) {
-      console.log(err);
-    }
   }
 
   const selectButton = (button) => {
@@ -127,7 +109,7 @@ function graph() {
         <button className={`dataBtn mr-2 ${selectedButton === 'lastgrade' ? 'bg-cyan-500' : ''}`} onClick={() => selectButton('lastgrade')}>last grade</button>
       </div>
       <div id="graph"></div>
-      <CompareTable selectedButton={selectedButton} friendsData={userData} usersData={usersData}/>
+      <CompareTable selectedButton={selectedButton} friendsData={userData["friendsData"]} usersData={userData["usersData"]}/>
     </Fragment>
   )
 }

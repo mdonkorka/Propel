@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useState, useEffect } from 'react'
 
 import ListFriends from './ListFriends';
 import Graph from './Graph';
@@ -8,6 +8,28 @@ function friends() {
 
   const [searchUsername, setSearchUsername] = useState("");
   const [errorLabel, setErrorLabel] = useState("");
+  const [userData, setuserData] = useState(null);
+  
+  useEffect( () => {
+    getData();
+  }, [])
+
+  const getData = async () => {
+    // console.log("getting data");
+    try {
+      const fetchedUserData = await fetch ("http://localhost:4000/graph/getdata", {
+        method: "GET",
+        headers: {"Content-Type": "application/json"},
+        credentials: "include",
+      });
+
+      const fetchedData = await fetchedUserData.json();
+      setuserData(fetchedData);
+
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   const searchForFriends = async e => {
     //e.preventDefault();
@@ -43,7 +65,7 @@ function friends() {
       {/* In the friends table, each friend needs to have remove and view profile next to their name */}
       {/* I need tables for friends, outgoing requests, and incoming requests */}
       <ListFriends/>
-      <Graph/>
+      <Graph userData={userData}/>
     </Fragment>
   )
 }
