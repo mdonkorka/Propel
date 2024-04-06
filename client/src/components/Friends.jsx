@@ -9,7 +9,7 @@ function friends() {
   const [searchUsername, setSearchUsername] = useState("");
   const [errorLabel, setErrorLabel] = useState("");
   const [userData, setuserData] = useState(null);
-  
+
   useEffect( () => {
     getData();
   }, [])
@@ -53,6 +53,9 @@ function friends() {
     }
   }
 
+  //A modal needs to be created for view profile. 
+  //userData will contain the data needed to create a graph
+
   return (
     <Fragment>
       <h2 className=' text-xl'>Friends</h2>
@@ -61,9 +64,6 @@ function friends() {
         <input className='border-2 mr-2' value={searchUsername} onChange={e => setSearchUsername(e.target.value)}/>
         <button className='border-2 p-1'>Add Friend</button>
       </form>
-      {/* <button className=" bg-yellow-400 mt-5"> View Friends</button> */}
-      {/* In the friends table, each friend needs to have remove and view profile next to their name */}
-      {/* I need tables for friends, outgoing requests, and incoming requests */}
       <ListFriends/>
       <Graph userData={userData}/>
     </Fragment>

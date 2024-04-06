@@ -5,6 +5,7 @@ function ListFriends() {
   const [friends, setFriends] = useState([])
   const [outgoing, setOutgoing] = useState([])
   const [incoming, setIncoming] = useState([])
+  const [modalOpen, setModalOpen] = useState(false); // State for modal visibility
 
   useEffect(() => {
     getData();
@@ -106,11 +107,37 @@ function ListFriends() {
     }
   }
 
+  const viewProfile = (index) => {
+    console.log(index);
+    setModalOpen(true); // Open modal
+    document.body.classList.add('overflow-hidden');
 
+    //Show dual bar plot graph comparing friend and user data. Format:
+    //{group: attendance, friend:20, user:28}
+    //{group: faliures, friend:10, user:5}
+
+    
+    
+    //Show friends top three apps
+  };
+
+  const closeModal = () => {
+    setModalOpen(false); // Close modal
+    document.body.classList.remove('overflow-hidden');
+  };
 
 
   return (
     <Fragment>
+
+      {modalOpen && 
+      <div id="myModal" onClick={closeModal} className="flex justify-center items-center fixed inset-0 z-50 overflow-auto bg-black bg-opacity-40">
+        <div className="bg-white mx-auto p-20 border border-gray-300 w-1/2 h-4/6">
+          Modal <br/>
+          <button onClick={closeModal}>X</button>
+        </div>
+      </div>}
+
       <table>
         <thead>
           <tr>
@@ -124,7 +151,7 @@ function ListFriends() {
             <tr key={index}>
               <td className='px-6 py-1 text-center'>{friend.username}</td>
               <td className='px-6 py-1'>
-                <button className=' border-2 p-1 text-center'>View Profile</button>
+                <button className=' border-2 p-1 text-center' onClick={(e) => viewProfile(index, e)}>View Profile</button>
               </td>
               <td className='px-6 py-1'>
                 <button className='border-2 p-1 text-center' onClick={(e) => removeFriend(index, e)}>Remove Friend</button>
