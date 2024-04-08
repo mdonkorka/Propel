@@ -64,7 +64,7 @@ function friends() {
         <input className='border-2 mr-2' value={searchUsername} onChange={e => setSearchUsername(e.target.value)}/>
         <button className='border-2 p-1'>Add Friend</button>
       </form>
-      <ListFriends/>
+      <ListFriends userData={userData}/>
       <Graph userData={userData}/>
     </Fragment>
   )

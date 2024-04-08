@@ -6,6 +6,17 @@ dotenv.config();
 
 const tokenAuthentication = require('../middleware/authMiddleware');
 
+router.get("/topthreeapps", tokenAuthentication, async (req, res) => {
+  const {userId} = req.query
+  const topthreeapps = await pool.query(`SELECT (name, usecase, link)
+                                          FROM topthreeapps
+                                          WHERE userid = $1`,
+  [userId]);
+  console.log(userId)
+  console.log(topthreeapps)
+  return res.status(200).json(topthreeapps.rows);
+});
+
 router.post("/deleteOutgoingRequest", tokenAuthentication, async (req, res) => {
   const {otherUserId} = req.body
   pool.query(`DELETE FROM friends WHERE (userid1 = $1 AND userid2 = $2)
