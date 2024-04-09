@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom"
 
 import Friends from './Friends.jsx'
+import GradePredictor from "./GradePredictor.jsx";
 
 function Dashboard() {
 
@@ -31,6 +32,7 @@ function Dashboard() {
       </Link>
       <div className="mt-5">
         <Friends/>
+        <GradePredictor/>
       </div>
    </div>
   )

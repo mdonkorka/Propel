@@ -39,8 +39,8 @@ function graph({userData}) {
         //add the user score to graphData
         graphData[attribute].push({group: "user score", value: userScore})
       }
-      console.log(userData);
-      console.log(graphData)
+      // console.log(userData);
+      // console.log(graphData)
 
       setUpdatedGraphData(graphData);
       update(graphData[selectedButton])
