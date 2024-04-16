@@ -32,20 +32,23 @@ function compareTable({selectedButton, friendsData, usersData}) {
 
   return (
     <Fragment>
-      <table>
+      <table className='w-full'>
         <thead>
           <tr>
-            <th className='px-6 py-1 w-52'>Username</th>
-            <th className='px-6 py-1'>{selectedButtonMap[selectedButton]}</th>
+            <th className='px-6 py-1 text-xl w-1/3'>No.</th>
+            <th className='px-6 py-1 text-xl w-1/3'>Username</th>
+            <th className='px-6 py-1 text-xl  w-1/3'>{selectedButtonMap[selectedButton]}</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td className='px-6 py-1 text-center'>{usersData.username}</td>
+            <td></td>
+            <td className='px-6 py-1 text-center bg-yellow-400 font-bold'>{usersData.username}</td>
             <td className='px-6 py-1 text-center'>{usersData[selectedButton]}</td>
-          </tr>
+          </tr >
           {sortedDataMap[selectedButton].map((friend, index) => (
             <tr key={index}>
+              <td className='px-6 py-1 text-center'>{index+1}.</td>
               <td className='px-6 py-1 text-center'>{friend.username}</td>
               <td className='px-6 py-1 text-center'>{friend[selectedButton]}</td>
             </tr>

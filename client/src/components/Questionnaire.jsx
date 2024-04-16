@@ -89,21 +89,31 @@ function Questionnaire() {
 
   return (
     <div>
-      <form className="flex flex-col" onSubmit={onSubmitForm}>
-        <h2 className="mt-20 mb-5 font-bold text-xl">Your Academic Data</h2>
-        <label>What is your atttendance?</label>
-        <input className="border-2 p-1 w-200 w-96" type="text" value={attendance} onChange={e => setAttendance(e.target.value)}></input>
-        <label className="mt-5" >How many absences do you have?</label>
-        <input className="border-2 p-1 w-96" type="text" value={absences} onChange={e => setAbsences(e.target.value)}></input>
-        <label className="mt-5">How many past faliures do you have?</label>
-        <input className="border-2 p-1 w-96" type="text" value={faliures} onChange={e => setFaliures(e.target.value)}></input>
-        <label className="mt-5">On Average, how long do you study each week?</label>
-        <input className="border-2 p-1 w-96" type="text" value={studytime} onChange={e => setStudyTime(e.target.value)}></input>
-        <label className="mt-5">What was your last grade (percentage)?</label>
-        <input className="border-2 p-1 w-96" type="text" value={lastgrade} onChange={e => setLastGrade(e.target.value)}></input>
+      <form className="h-[calc(100vh-2.5rem)] flex flex-col justify-center items-center" onSubmit={onSubmitForm}>
+        <h2 className="mt-20 mb-5 font-bold text-2xl">Your Academic Data</h2>
+        <div className="flex">
+          <div className="flex flex-col items-center">
+            <label className="text-center">How many past faliures do you have?</label>
+            <input className="mr-5 border-2 p-1 w-96 text-center" type="text" value={faliures} onChange={e => setFaliures(e.target.value)}></input>
+          </div>
+          <div className="flex flex-col items-center">
+            <label className="text-center" >How many absences do you have?</label>
+            <input className="border-2 p-1 w-96 text-center" type="text" value={absences} onChange={e => setAbsences(e.target.value)}></input>
+          </div>
+        </div>
+        <div className="flex">
+          <div className="flex flex-col items-center">
+            <label className="mt-5">On Average, how long do you study each week?</label>
+            <input className="mr-5 border-2 p-1 w-96 text-center" type="text" value={studytime} onChange={e => setStudyTime(e.target.value)}></input>
+          </div>
+          <div className="flex flex-col items-center">
+            <label className="mt-5">What was your last grade (percentage)?</label>
+            <input className="border-2 p-1 w-96 text-center" type="text" value={lastgrade} onChange={e => setLastGrade(e.target.value)}></input>
+          </div>
+        </div>
       
-        <div className="flex flex-col">
-          <h2 className="mt-10 mb-5 font-bold text-xl">Your Top Three Apps</h2>
+        <div className="flex flex-col items-center">
+          <h2 className="mt-10 mb-5 font-bold text-2xl">Your Top Three Apps</h2>
           <div className="flex flex-row">
             <div className="flex flex-col">
               <label>App 1 Name</label>
@@ -148,11 +158,14 @@ function Questionnaire() {
           </div>
         </div>
         <div className=" flex w-40 justify-around mt-5">
-          <button className="bg-green-500 p-3 h-10">Submit</button>  
+          <button className="bg-green-500 p-3 h-10 text-white font-bold mr-3">Submit</button>  
           <Link to="/dashboard">
-            <button className="bg-red-500 p-3 h-10 ">Cancel</button>
+            <button className="bg-red-500 p-3 h-10 text-white font-bold">Cancel</button>
           </Link> 
         </div>
+        <Link to="/dashboard">
+            <button className="w-60 mt-5 border-4 h-10 ">Back to Dashboard</button>
+          </Link>
       </form> 
     </div>
   )

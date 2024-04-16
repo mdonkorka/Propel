@@ -29,7 +29,7 @@ const executePython = async (script, args) => {
       });
 
       py.on("exit", (code) => {
-          console.log(`Child process exited with code ${code}`);
+          // console.log(`Child process exited with code ${code}`);
           resolve(output);
       });
   });
@@ -46,7 +46,7 @@ router.get('/', tokenAuthentication, async (req, res) => {
   
   const userData = fetchedUserData.rows[0].row.slice(1,-1).split(',');
   userDataNumbers = userData.map(num => Number(num))
-  console.log(userDataNumbers)
+  // console.log(userDataNumbers)
 
   try {
       const fetchedResult = await executePython('python/gradepredictor.py', userDataNumbers);

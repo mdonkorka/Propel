@@ -62,8 +62,8 @@ function graph({userData}) {
   }
 
   const update = (data) => {
-    const margin = { top: 30, right: 30, bottom: 70, left: 60 };
-    const width = 460 - margin.left - margin.right;
+    const margin = { top: 30, right: 30, bottom: 40, left: 60 };
+    const width = 800 - margin.left - margin.right;
     const height = 400 - margin.top - margin.bottom;
 
     const svg = d3.select("#graph").html("")
@@ -86,31 +86,36 @@ function graph({userData}) {
       .range([height, 0]);
     svg.append("g")
       .call(d3.axisLeft(y));
+      svg.selectAll(".tick text").attr("font-size", "16px");
 
-    const u = svg.selectAll("rect")
-      .data(data)
-      .enter()
-      .append("rect")
-      .attr("x", function (d) { return x(d.group); })
-      .attr("y", function (d) { return y(d.value); })
-      .attr("width", x.bandwidth())
-      .attr("height", function (d) { return height - y(d.value); })
-      .attr("fill", "#69b3a2");
+      const barWidth = 100; // Adjust the width of the bars here
+      const u = svg.selectAll("rect")
+          .data(data)
+          .enter()
+          .append("rect")
+          .attr("x", function (d) { return x(d.group) + (x.bandwidth() - barWidth) / 2; }) // Centering the bars
+          .attr("y", function (d) { return y(d.value); })
+          .attr("width", barWidth) // Setting the width explicitly
+          .attr("height", function (d) { return height - y(d.value); })
+          .attr("fill", "#00cc00");
+
   };
 
   return (
-    <Fragment>
-      <h2 className='text-xl'>Graph</h2>
-      <div className="flex">
-        <button className={`dataBtn mr-2 ${selectedButton === 'attendance' ? 'bg-cyan-500' : ''}`} onClick={() => selectButton('attendance')}>attendance</button>
-        <button className={`dataBtn mr-2 ${selectedButton === 'faliures' ? 'bg-cyan-500' : ''}`} onClick={() => selectButton('faliures')}>faliures</button>
-        <button className={`dataBtn mr-2 ${selectedButton === 'studytime' ? 'bg-cyan-500' : ''}`} onClick={() => selectButton('studytime')}>study time</button>
-        <button className={`dataBtn mr-2 ${selectedButton === 'absences' ? 'bg-cyan-500' : ''}`} onClick={() => selectButton('absences')}>absences</button>
-        <button className={`dataBtn mr-2 ${selectedButton === 'lastgrade' ? 'bg-cyan-500' : ''}`} onClick={() => selectButton('lastgrade')}>last grade</button>
+    <div>
+      <div className="flex justify-center">
+        <button className={`dataBtn mr-2 text-xl border-2 py-1 px-2 rounded-xl font-semibold ${selectedButton === 'attendance' ? 'bg-cyan-500 text-white' : ''}`} onClick={() => selectButton('attendance')}>attendance</button>
+        <button className={`dataBtn mr-2 text-xl border-2 py-1 px-2 rounded-xl font-semibold ${selectedButton === 'faliures' ? 'bg-cyan-500 text-white' : ''}`} onClick={() => selectButton('faliures')}>faliures</button>
+        <button className={`dataBtn mr-2 text-xl border-2 py-1 px-2 rounded-xl font-semibold ${selectedButton === 'studytime' ? 'bg-cyan-500 text-white' : ''}`} onClick={() => selectButton('studytime')}>study time</button>
+        <button className={`dataBtn mr-2 text-xl border-2 py-1 px-2 rounded-xl font-semibold ${selectedButton === 'absences' ? 'bg-cyan-500 text-white' : ''}`} onClick={() => selectButton('absences')}>absences</button>
+        <button className={`dataBtn mr-2 text-xl border-2 py-1 px-2 rounded-xl font-semibold ${selectedButton === 'lastgrade' ? 'bg-cyan-500 text-white' : ''}`} onClick={() => selectButton('lastgrade')}>last grade</button>
       </div>
       <div id="graph"></div>
-      <CompareTable selectedButton={selectedButton} friendsData={userData["friendsData"]} usersData={userData["usersData"]}/>
-    </Fragment>
+      <div className='border-2 ml-10 pb-5 rounded-xl'>
+          <h2 className='text-2xl text-center mt-5'>Leaderboard</h2>
+          <div className='flex justify-center'><CompareTable selectedButton={selectedButton} friendsData={userData["friendsData"]} usersData={userData["usersData"]}/></div>
+        </div>
+      </div>
   )
 }
 
