@@ -1,13 +1,17 @@
 import { Link } from "react-router-dom"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useContext } from "react"
 
 import GradePredictor from "./GradePredictor.jsx";
 import ListFriends from "./ListFriends.jsx";
 import Graph from "./Graph.jsx";
 
+import { AuthContext } from '../context/AuthContext';
+
 function Dashboard() {
 
   const [userData, setuserData] = useState(null);
+
+  const { setIsLoggedIn, isLoggedIn } = useContext(AuthContext);
 
   useEffect( () => {
     getData();
@@ -29,8 +33,8 @@ function Dashboard() {
       console.log(err);
     }
   }
-
-  
+  setIsLoggedIn(true);
+  console.log("LoggedIn? ", isLoggedIn);
 
   return (
     <div>

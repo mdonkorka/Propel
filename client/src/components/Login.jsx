@@ -1,7 +1,11 @@
 import { Link } from "react-router-dom"
-import React, { useState } from "react"
+import React, { useState, useContext } from "react"
+
+import { AuthContext } from '../context/AuthContext';
 
 function Login() {
+
+  const { setIsLoggedIn } = useContext(AuthContext);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -23,6 +27,7 @@ function Login() {
         throw Error(`Respose Status Code: ${response.status}`)
       }
       window.location = "/dashboard";
+      setIsLoggedIn(true)
     } catch (err) {
       console.log(err)
     }
