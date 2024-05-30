@@ -26,7 +26,8 @@ router.post("/save", tokenAuthentication, async (req, res) => {
     } else {
       //add a new entry to the questionnaire table
       const newQuestionnaire = await pool.query(
-        'INSERT INTO questionnaire (userId, attendance, absences, faliures, studytime, lastgrade) VALUES ($1, $2, $3, $4, $5, $6)',
+        `INSERT INTO questionnaire (userId, attendance, absences, faliures, studytime, lastgrade) 
+        VALUES ($1, $2, $3, $4, $5, $6)`,
         [req.id, attendance, absences, faliures, studytime, lastgrade]
       );
     }

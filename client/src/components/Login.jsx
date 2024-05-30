@@ -36,7 +36,7 @@ function Login() {
   return (
     <div className=" h-[calc(100vh-2.5rem)] flex bg-yellow flex-col justify-center items-center w-full">
         <h1 className="font-bold text-5xl">Login</h1>
-        <label className="mt-5">{errorLabel}</label>
+        <label className="mt-5 text-red-500">{errorLabel}</label>
         <form className="mt-5 flex flex-col items-center" onSubmit={onSubmitForm}>
           <input className="border-2 p-1 w-96" placeholder="Email" type="email" value={email} onChange={e => setEmail(e.target.value)}></input><br/>
           <input className="border-2 p-1 w-96" placeholder="Password" type="password" value={password} onChange = {e => setPassword(e.target.value)}></input>

@@ -68,24 +68,6 @@ function ListFriends({userData}) {
     }
   }
 
-  const deleteOutgoingRequest = async (index, e) => {
-    e.preventDefault();
-    try {
-      const otherUserId = outgoing[index].userid2;
-      const body = { otherUserId }
-
-      const response = await fetch ("http://localhost:4000/friends/deleteOutgoingRequest", {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify(body),
-        credentials: "include"
-      });
-      window.location.reload();
-    } catch (err) {
-      console.log(err)
-    }
-  }
-
   const acceptIncomingRequest = async (index, e) => {
     e.preventDefault();
     try {
@@ -94,25 +76,6 @@ function ListFriends({userData}) {
       console.log(body)
 
       const response = await fetch ("http://localhost:4000/friends/acceptIncomingRequest", {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify(body),
-        credentials: "include"
-      });
-      window.location.reload();
-    } catch (err) {
-      console.log(err)
-    }
-  }
-
-  const rejectIncomingRequest = async (index, e) => {
-    e.preventDefault();
-    try {
-      const otherUserId = incoming[index].userid2;
-      const body = { otherUserId }
-      console.log(body)
-
-      const response = await fetch ("http://localhost:4000/friends/rejectIncomingRequest", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(body),
@@ -408,7 +371,7 @@ function ListFriends({userData}) {
         </tbody>
       </table> </div>}
 
-      {incomingList && <table className='mx-auto'>
+      {incomingList && <table className='mx-auto overflow-y-auto max-h-80'>
         <thead>
           <tr>
             <th className='px-6 py-1 w-52'>Incoming Request</th>
@@ -426,7 +389,7 @@ function ListFriends({userData}) {
                 </button>
               </td>
               <td className='px-6 py-1'>
-                <button className='p-1 text-center' onClick={(e) => rejectIncomingRequest(index, e)}>
+                <button className='p-1 text-center' onClick={(e) => removeFriend(index, e)}>
                 <img src={cross_icon} className='w-10 mx-auto'></img>
                 </button>
               </td>
@@ -435,7 +398,7 @@ function ListFriends({userData}) {
         </tbody>
       </table>}
 
-      {outgoingList && <table className='mx-auto'>
+      {outgoingList && <table className='mx-auto overflow-y-auto max-h-80'>
         <thead>
           <tr>
             <th className='px-6 py-1 w-52'>Outgoing Request</th>
@@ -447,7 +410,7 @@ function ListFriends({userData}) {
             <tr key={index}>
               <td className='px-6 py-1 text-center'>{friend.username}</td>
               <td className='px-6 py-1'>
-                <button className='p-1 text-center' onClick={(e) => deleteOutgoingRequest(index, e)}>
+                <button className='p-1 text-center' onClick={(e) => removeFriend(index, e)}>
                 <img src={cross_icon} className='w-10 mx-auto'></img>
                 </button>
               </td>

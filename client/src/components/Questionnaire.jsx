@@ -159,9 +159,9 @@ function Questionnaire() {
         </div>
         <div className=" flex w-40 justify-around mt-5">
           <button className="bg-green-500 p-3 h-10 text-white font-bold mr-3">Submit</button>  
-          <Link to="/dashboard">
+          {/* <Link to="/dashboard">
             <button className="bg-red-500 p-3 h-10 text-white font-bold">Cancel</button>
-          </Link> 
+          </Link>  */}
         </div>
         <Link to="/dashboard">
             <button className="w-60 mt-5 border-4 h-10 ">Back to Dashboard</button>

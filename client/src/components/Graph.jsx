@@ -111,7 +111,7 @@ function graph({userData}) {
         <button className={`dataBtn mr-2 text-xl border-2 py-1 px-2 rounded-xl font-semibold ${selectedButton === 'lastgrade' ? 'bg-cyan-500 text-white' : ''}`} onClick={() => selectButton('lastgrade')}>last grade</button>
       </div>
       <div id="graph"></div>
-      <div className='border-2 ml-10 pb-5 rounded-xl'>
+      <div className='border-2 ml-10 pb-5 rounded-xl overflow-y-auto max-h-64'>
           <h2 className='text-2xl text-center mt-5'>Leaderboard</h2>
           <div className='flex justify-center'><CompareTable selectedButton={selectedButton} friendsData={userData["friendsData"]} usersData={userData["usersData"]}/></div>
         </div>

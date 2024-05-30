@@ -3,12 +3,11 @@ const cors = require("cors");
 const cookieParser = require('cookie-parser');
 const app = express();
 
+//middleware
 app.use((req,res,next)=>{
   res.header("Access-Control-Allow-Credentials", true)
   next()
 })
-
-//middleare
 app.use(cors({
   origin: "http://localhost:5173"
 }));

@@ -45,6 +45,8 @@ router.get('/', tokenAuthentication, async (req, res) => {
                                     [req.id]);
   
   const userData = fetchedUserData.rows[0].row.slice(1,-1).split(',');
+  console.log(fetchedUserData)
+  console.log(userData)
   userDataNumbers = userData.map(num => Number(num))
   // console.log(userDataNumbers)
 
@@ -58,3 +60,5 @@ router.get('/', tokenAuthentication, async (req, res) => {
 });
 
 module.exports = router;
+
+

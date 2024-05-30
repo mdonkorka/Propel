@@ -7,10 +7,8 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 router.post("/logout", async (req, res) => {
-  res.clearCookie("authToken", {
-    secure: true,
-    SameSite: "none"
-  }).status(200).json({message: "Successfully logged out"})
+  res.clearCookie("authToken")
+  .status(200).json({message: "Successfully logged out"})
 });
 
 router.post("/login", async (req, res) => {
@@ -19,11 +17,11 @@ router.post("/login", async (req, res) => {
     //Check if the user exists
     const user = await pool.query("SELECT * FROM users WHERE email = $1",[email]);
     if (user.rows.length == 0) {
-      return res.status(400).json({error: 'User does not exist'});
+      return res.status(400).json({error: 'Password or email is incorrect'});
     }
     //Check if the password is correct
     const passwordCheck = bcrypt.compareSync(password, user.rows[0].password);
-    if (!passwordCheck) return res.status(400).json({error: "Password or username is incorrect"});
+    if (!passwordCheck) return res.status(400).json({error: "Password or email is incorrect"});
 
     const token = jwt.sign({ id: user.rows[0].userid}, process.env.SECRET_KEY);
     res.cookie("authToken", token, {
@@ -44,11 +42,11 @@ router.post("/signup", async (req, res) => {
     //Check if user already exists
     const emailExists = await pool.query("SELECT * FROM users WHERE email = $1",[email]);
     if (emailExists.rows.length > 0) {
-      return res.status(400).json({error: 'Email already exists'})
+      return res.status(400).json({error: 'An account already exists with this email'})
     }
     const usernameExists = await pool.query("SELECT * FROM users WHERE username = $1",[username]);
     if (usernameExists.rows.length > 0) {
-      return res.status(400).json({error: 'Username already exists'})
+      return res.status(400).json({error: 'An account already exists with this username'})
     }
 
     //hash password
@@ -57,7 +55,8 @@ router.post("/signup", async (req, res) => {
 
     //Add user to database
     const newUser = await pool.query(
-      'INSERT INTO Users (email, username, password, firstname, lastname, filledinquestionnaire) VALUES ($1, $2, $3, $4, $5, $6)',
+      `INSERT INTO Users (email, username, password, firstname, lastname, filledinquestionnaire) 
+      VALUES ($1, $2, $3, $4, $5, $6)`,
       [email, username,  hashedPassword, firstname, lastname, false]
     );
     res.status(200).json({message: 'User created successfully'});

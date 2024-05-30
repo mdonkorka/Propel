@@ -12,25 +12,7 @@ router.get("/topthreeapps", tokenAuthentication, async (req, res) => {
                                           FROM topthreeapps
                                           WHERE userid = $1`,
   [userId]);
-  console.log(userId)
-  console.log(topthreeapps)
   return res.status(200).json(topthreeapps.rows);
-});
-
-router.post("/deleteOutgoingRequest", tokenAuthentication, async (req, res) => {
-  const {otherUserId} = req.body
-  pool.query(`DELETE FROM friends WHERE (userid1 = $1 AND userid2 = $2)
-                                     OR (userid1 = $2 AND userid2 = $1)`,
-  [req.id, otherUserId]);
-  return res.status(200).json("Outgoing request succesfully deleted");
-});
-
-router.post("/rejectIncomingRequest", tokenAuthentication, async (req, res) => {
-  const {otherUserId} = req.body
-  pool.query(`DELETE FROM friends WHERE (userid1 = $1 AND userid2 = $2)
-                                     OR (userid1 = $2 AND userid2 = $1)`,
-  [req.id, otherUserId]);
-  return res.status(200).json("Incoming request succesfully rejected");
 });
 
 router.post("/acceptIncomingRequest", tokenAuthentication, async (req, res) => {
@@ -41,7 +23,8 @@ router.post("/acceptIncomingRequest", tokenAuthentication, async (req, res) => {
   [req.id, otherUserId]);
 
   //create new friendship
-  pool.query("INSERT INTO friends (userid1, userid2, type) VALUES ($1, $2, $3), ($4, $5, $6)",
+  pool.query(`INSERT INTO friends (userid1, userid2, type) 
+              VALUES ($1, $2, $3), ($4, $5, $6)`,
     [req.id, otherUserId, "friends", otherUserId, req.id, "friends"]);
   return res.status(200).json("Incoming request succesfully accepted");
 });
@@ -51,7 +34,7 @@ router.post("/removefriend", tokenAuthentication, async (req, res) => {
   pool.query(`DELETE FROM friends WHERE (userid1 = $1 AND userid2 = $2)
                                      OR (userid1 = $2 AND userid2 = $1)`,
   [req.id, otherUserId]);
-  return res.status(200).json("Incoming request succesfully rejected");
+  return res.status(200).json("friend request succesfully deleted");
 });
 
 router.post("/add", tokenAuthentication, async (req, res) => {
@@ -79,9 +62,9 @@ router.post("/add", tokenAuthentication, async (req, res) => {
     //If you are already friends with the user
     return res.status(400).json({error: 'You are already friends with this user'});
   }
-  if (checkRelationship.rows[0].type == "friends") {
+  if (checkRelationship.rows[0].type == "outoing") {
     //If there is already an outgoing request to the user
-    return res.status(400).json({error: 'There is already and outoging request to this user'});
+    return res.status(400).json({error: 'There is already an outgoing request to this user'});
   }
   if (checkRelationship.rows[0].type == "incoming") {
     //If there is already an outgoing request to the user
